@@ -1,4 +1,5 @@
-package com.example.miappgps.ui.map
+package com.example.miappgps.viewmodel
+
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,6 +8,7 @@ import com.example.miappgps.data.repository.TripRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+
 class MapViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = TripRepository(application)
 
@@ -14,7 +16,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
         repository.getAllPoints()
             .stateIn(
                 viewModelScope,
-                SharingStarted.WhileSubscribed(5000),
+                SharingStarted.Companion.WhileSubscribed(5000),
                 emptyList()
             )
 
