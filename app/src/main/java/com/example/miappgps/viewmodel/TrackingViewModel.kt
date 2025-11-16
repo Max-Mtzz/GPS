@@ -1,6 +1,7 @@
 package com.example.miappgps.viewmodel
 
 import android.app.Application
+import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.miappgps.data.Location.LocationClient
@@ -66,6 +67,19 @@ class TrackingViewModel(application: Application) : AndroidViewModel(application
     }
 // Se llama cuando el usuario presiona "Stop" (antes de la foto)
 
+    private fun stopRecording() {
+        locationJob?.cancel()
+        _uiState.update { it.copy(isRecording = false) }
+    }
+    // Se llama DESPUÉS de que la cámara toma la foto
+    fun savePhotoAndUpdateTrip(photoUri: Uri) {
+        val tripId = _uiState.value.currentTripId ?: return
+        viewModelScope.launch {
+            repository.stopTripAndAddPhoto(tripId, photoUri.toString())
+// Reseteamos el estado para el próximo viaje
+            _uiState.update { TrackingUiState(isRecording = false, currentTripId = null) }
+        }
+    }
 
 
 }
