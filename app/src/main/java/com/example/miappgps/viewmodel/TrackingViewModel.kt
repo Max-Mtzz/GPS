@@ -2,12 +2,19 @@ package com.example.miappgps.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.miappgps.data.Location.LocationClient
+import com.example.miappgps.data.db.LocationPoint
 import com.example.miappgps.data.repository.TripRepository
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class TrackingUiState(
     val isRecording: Boolean = false,
@@ -27,6 +34,37 @@ class TrackingViewModel(application: Application) : AndroidViewModel(application
 
     private var locationJob: Job? = null
 
+    fun onStartStopClick() {
+        if (_uiState.value.isRecording) {
+            stopRecording()
+        } else {
+            startRecording()
+        }
+    }
+    private fun startRecording() {
+        locationJob?.cancel() // Cancela cualquier trabajo anterior
+        viewModelScope.launch {
+// 1. Crear un nuevo viaje en la BD
+            val newTripId = repository.startNewTrip()
+// 2. Actualizar el estado de la UI
+            _uiState.update { TrackingUiState(isRecording = true, currentTripId = newTripId) }
+// 3. Empezar a escuchar el GPS
+            locationJob = locationClient.getLocationUpdates(5000L) // cada 5 seg
+                .catch { e -> e.printStackTrace() } // Manejar error
+                .onEach { location ->
+// 4. Guardar cada punto en la BD
+                    val point = LocationPoint(
+                        tripId = newTripId,
+                        latitude = location.latitude,
+                        longitude = location.longitude,
+                        timestamp = System.currentTimeMillis()
+                    )
+                    repository.saveLocationPoint(point)
+                }
+                .launchIn(viewModelScope) // Lanza la corutina
+        }
+    }
+// Se llama cuando el usuario presiona "Stop" (antes de la foto)
 
 
 
