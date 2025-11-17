@@ -57,6 +57,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.1")
 // ROOM
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.play.services.maps)
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     testImplementation("androidx.room:room-testing:2.6.1")
@@ -71,4 +73,8 @@ dependencies {
     implementation("androidx.camera:camera-view:1.3.3")
 // Carga de Imágenes (Coil para la galería)
     implementation("io.coil-kt:coil-compose:2.6.0")
+    //OpenStreetMap
+    implementation("org.osmdroid:osmdroid-android:6.1.17")
+    implementation("io.github.ghost1372:map-compose:1.0.0")
+
 }
