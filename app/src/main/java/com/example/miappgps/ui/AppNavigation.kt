@@ -1,9 +1,9 @@
-package com.example.miappgps.ui
-
+package com.ejemplo.miappgps.ui
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.map
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -19,7 +19,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.ejemplo.miappgps.ui.map.MapScreen
+import com.example.miappgps.ui.gallery.GalleryScreen
+import com.example.miappgps.ui.tracking.TrackingScreen
 
+// 1. Definimos las rutas de las pestañas
 sealed class Screen(val route: String, val label: String, val icon: ImageVector) {
     object Tracking : Screen("tracking", "Grabar", Icons.Default.LocationOn)
     object Map : Screen("map", "Mapa", Icons.Default.Map)
