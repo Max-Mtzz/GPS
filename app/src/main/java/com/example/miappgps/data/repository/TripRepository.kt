@@ -1,10 +1,9 @@
 package com.example.miappgps.data.repository
 
 import android.content.Context
-
-import com.example.miappgps.data.AppDatabase
-import com.example.miappgps.data.LocationPoint
-import com.example.miappgps.data.Trip
+import com.example.miappgps.data.db.AppDatabase
+import com.example.miappgps.data.db.LocationPoint
+import com.example.miappgps.data.db.Trip
 
 class TripRepository(context: Context) {
 
@@ -20,7 +19,6 @@ class TripRepository(context: Context) {
     suspend fun saveLocationPoint(point: LocationPoint) {
         tripDao.insertLocationPoint(point)
     }
-
     suspend fun stopTripAndAddPhoto(tripId: Long, photoUri: String) {
         val trip = tripDao.getTripById(tripId)
         trip?.let {

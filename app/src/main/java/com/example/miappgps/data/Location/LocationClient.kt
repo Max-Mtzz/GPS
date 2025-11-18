@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.callbackFlow
 class LocationClient(private val context: Context,
                      private val client: FusedLocationProviderClient
 ) {
-
     @SuppressLint("MissingPermission") // Asumimos que los permisos se piden en la UI
     fun getLocationUpdates(interval: Long): Flow<Location> {
 // callbackFlow es la magia para convertir callbacks en Flows

@@ -1,4 +1,4 @@
-package com.ejemplo.miappgps.viewmodel
+package com.example.miappgps.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope

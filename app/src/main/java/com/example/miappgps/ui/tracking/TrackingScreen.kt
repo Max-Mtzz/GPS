@@ -26,7 +26,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.miappgps.viewmodel.TrackingViewModel
 import java.io.File
-import java.util.Objects
+
 @Composable
 fun TrackingScreen(
     viewModel: TrackingViewModel = viewModel()
@@ -46,7 +46,7 @@ fun TrackingScreen(
             }
         }
     )
-// --- Lógica de Permisos ---
+    // --- Lógica de Permisos ---
     val permissionsToRequest = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.CAMERA
@@ -65,7 +65,7 @@ fun TrackingScreen(
     LaunchedEffect(key1 = true) {
         permissionLauncher.launch(permissionsToRequest)
     }
-// --- UI ---
+    // --- UI ---
     Scaffold { padding ->
         Column(
             modifier = Modifier

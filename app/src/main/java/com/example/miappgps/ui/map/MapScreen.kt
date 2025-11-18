@@ -1,4 +1,4 @@
-package com.ejemplo.miappgps.ui.map
+package com.example.miappgps.ui.map
 
 import android.graphics.Color
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,6 +36,7 @@ fun MapScreen(
                 setMultiTouchControls(true)
                 controller.setZoom(17.0)
 
+                // Si hay puntos, centrar el mapa
                 allPoints.lastOrNull()?.let { last ->
                     controller.setCenter(GeoPoint(last.latitude, last.longitude))
                 }
@@ -46,18 +47,24 @@ fun MapScreen(
 
             if (allPoints.isNotEmpty()) {
                 val geoPoints = allPoints.map { GeoPoint(it.latitude, it.longitude) }
+
+                // --- 1. Dibujar POLILÍNEA ---
                 val line = Polyline().apply {
                     setPoints(geoPoints)
                     outlinePaint.color = Color.BLUE
                     outlinePaint.strokeWidth = 8f
                 }
                 mapView.overlays.add(line)
+
+                // --- 2. Marcador inicial ---
                 val startMarker = Marker(mapView).apply {
                     position = geoPoints.first()
                     title = "Inicio"
                     setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                 }
                 mapView.overlays.add(startMarker)
+
+                // --- 3. Marcador final ---
                 val endMarker = Marker(mapView).apply {
                     position = geoPoints.last()
                     title = "Fin"
@@ -65,11 +72,11 @@ fun MapScreen(
                 }
                 mapView.overlays.add(endMarker)
 
-
+                // Centrar cámara en el último punto
                 mapView.controller.setCenter(geoPoints.last())
             }
 
-
+            // Redibujar
             mapView.invalidate()
         }
     )
