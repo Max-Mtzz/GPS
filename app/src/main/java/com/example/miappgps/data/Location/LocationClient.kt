@@ -3,7 +3,7 @@ package com.example.miappgps.data.Location
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
-import android.location.LocationRequest
+import com.google.android.gms.location.LocationRequest
 import android.os.Looper
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
